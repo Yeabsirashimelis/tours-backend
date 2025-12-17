@@ -59,6 +59,18 @@ export const updateTour = catchAsync(async (req, res, next) => {
   });
 });
 
+export const getTourImagesUpload = (req, res, next) => {
+  // This is just a placeholder to show the upload fields required
+  res.status(200).json({
+    status: 'success',
+    message: 'Use PATCH /tours/:id with multipart/form-data',
+    fields: {
+      imageCover: 'Single image file for tour cover',
+      images: 'Up to 3 image files for tour gallery',
+    },
+  });
+};
+
 export const deleteTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findByIdAndDelete(req.params.id);
 

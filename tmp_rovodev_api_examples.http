@@ -60,7 +60,7 @@ Content-Type: application/json
 # USERS
 ###########################################
 
-### Get My Profile Data (Update Me)
+### Update My Profile Data (with JSON)
 PATCH {{baseUrl}}/users/updateMe
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -69,6 +69,22 @@ Content-Type: application/json
   "name": "John Updated",
   "email": "johnupdated@example.com"
 }
+
+### Update My Profile with Photo Upload (multipart/form-data)
+# Note: Use Postman or similar tool for file uploads
+# This is a form-data request with:
+# - photo: [Select image file]
+# - name: "John Updated"
+# - email: "johnupdated@example.com"
+PATCH {{baseUrl}}/users/updateMe
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data
+
+# In Postman:
+# Body > form-data
+# Key: photo, Type: File, Value: [select image]
+# Key: name, Type: Text, Value: John Updated
+# Key: email, Type: Text, Value: johnupdated@example.com
 
 ### Delete Me (Soft delete)
 DELETE {{baseUrl}}/users/deleteMe
@@ -127,14 +143,35 @@ Content-Type: application/json
   "startDates": ["2024-06-01", "2024-07-15", "2024-08-10"]
 }
 
-### Update Tour
+### Update Tour (JSON - without images)
 PATCH {{baseUrl}}/tours/TOUR_ID_HERE
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "price": 599,
   "maxGroupSize": 20
 }
+
+### Update Tour with Images (multipart/form-data)
+# Note: Use Postman or similar tool for file uploads
+# Admin or Lead-Guide only
+# This is a form-data request with:
+# - imageCover: [Select 1 image file for cover]
+# - images: [Select up to 3 image files for gallery]
+# - Other fields (price, name, etc.) as text
+PATCH {{baseUrl}}/tours/TOUR_ID_HERE
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data
+
+# In Postman:
+# Body > form-data
+# Key: imageCover, Type: File, Value: [select cover image]
+# Key: images, Type: File, Value: [select image 1]
+# Key: images, Type: File, Value: [select image 2]
+# Key: images, Type: File, Value: [select image 3]
+# Key: price, Type: Text, Value: 599
+# Key: maxGroupSize, Type: Text, Value: 20
 
 ### Delete Tour (Admin/Lead-guide only)
 DELETE {{baseUrl}}/tours/TOUR_ID_HERE

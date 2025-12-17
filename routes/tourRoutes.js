@@ -12,6 +12,10 @@ import {
 } from '../controllers/tourController.js';
 import { protect, restrictTo } from '../controllers/authController.js';
 import reviewRouter from './reviewRoutes.js';
+import {
+  uploadMultipleImages,
+  resizeTourImages,
+} from '../utils/imageUpload.js';
 
 const router = express.Router();
 
@@ -31,7 +35,16 @@ router.route('/').get(protect, getAllTours).post(createTour);
 router
   .route('/:id')
   .get(getTour)
-  .patch(updateTour)
+  .patch(
+    protect,
+    restrictTo('admin', 'lead-guide'),
+    uploadMultipleImages([
+      { name: 'imageCover', maxCount: 1 },
+      { name: 'images', maxCount: 3 },
+    ]),
+    resizeTourImages,
+    updateTour
+  )
   .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour);
 
 export default router;

@@ -17,6 +17,10 @@ import {
   signup,
   updatePassword,
 } from '../controllers/authController.js';
+import {
+  uploadSingleImage,
+  resizeUserPhoto,
+} from '../utils/imageUpload.js';
 
 const router = express.Router();
 
@@ -30,7 +34,7 @@ router.patch('/resetPassword/:token', resetPassword);
 router.use(protect);
 
 router.patch('/updateMyPassword', updatePassword);
-router.patch('/updateMe', updateMe);
+router.patch('/updateMe', uploadSingleImage('photo'), resizeUserPhoto, updateMe);
 router.delete('/deleteMe', deleteMe);
 
 // Restrict all routes after this middleware to admin only
