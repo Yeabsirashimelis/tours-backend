@@ -11,8 +11,13 @@ import {
   updateTour,
 } from '../controllers/tourController.js';
 import { protect, restrictTo } from '../controllers/authController.js';
+import reviewRouter from './reviewRoutes.js';
 
 const router = express.Router();
+
+// Nested route: POST /tours/:tourId/reviews
+// Nested route: GET /tours/:tourId/reviews
+router.use('/:tourId/reviews', reviewRouter);
 
 //params middleware
 // router.param('id', checkID);
