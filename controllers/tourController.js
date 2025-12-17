@@ -45,6 +45,16 @@ export const getTour = catchAsync(async (req, res, next) => {
   });
 });
 
+export const getToursByGuide = catchAsync(async (req, res, next) => {
+  const tours = await Tour.find({ guides: req.params.guideId });
+
+  res.status(200).json({
+    status: 'success',
+    results: tours.length,
+    data: { tours },
+  });
+});
+
 export const updateTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
@@ -134,5 +144,82 @@ export const getMonthlyPlan = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: { plan },
+  });
+});
+
+// /tours-within/:distance/center/:latlng/unit/:unit
+// /tours-within/233/center/34.111745,-118.113491/unit/mi
+export const getToursWithin = catchAsync(async (req, res, next) => {
+  const { distance, latlng, unit } = req.params;
+  const [lat, lng] = latlng.split(',');
+
+  // Calculate radius in radians
+  // Divide distance by radius of Earth
+  // Earth radius: 3963.2 miles, 6378.1 kilometers
+  const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1;
+
+  if (!lat || !lng) {
+    return next(
+      new AppError(
+        'Please provide latitude and longitude in the format lat,lng.',
+        400
+      )
+    );
+  }
+
+  const tours = await Tour.find({
+    startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
+  });
+
+  res.status(200).json({
+    status: 'success',
+    results: tours.length,
+    data: {
+      tours,
+    },
+  });
+});
+
+// /distances/:latlng/unit/:unit
+export const getDistances = catchAsync(async (req, res, next) => {
+  const { latlng, unit } = req.params;
+  const [lat, lng] = latlng.split(',');
+
+  // Multiplier to convert from meters to miles or kilometers
+  const multiplier = unit === 'mi' ? 0.000621371 : 0.001;
+
+  if (!lat || !lng) {
+    return next(
+      new AppError(
+        'Please provide latitude and longitude in the format lat,lng.',
+        400
+      )
+    );
+  }
+
+  const distances = await Tour.aggregate([
+    {
+      $geoNear: {
+        near: {
+          type: 'Point',
+          coordinates: [lng * 1, lat * 1],
+        },
+        distanceField: 'distance',
+        distanceMultiplier: multiplier,
+      },
+    },
+    {
+      $project: {
+        distance: 1,
+        name: 1,
+      },
+    },
+  ]);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data: distances,
+    },
   });
 });

@@ -1,0 +1,147 @@
+[
+  {
+    "name": "The Sea Explorer Tour",
+    "startLocation": {
+      "type": "Point",
+      "coordinates": [-118.113491, 34.111745],
+      "address": "Santa Monica Beach, Los Angeles, CA",
+      "description": "Santa Monica Pier"
+    },
+    "locations": [
+      {
+        "type": "Point",
+        "coordinates": [-118.496475, 34.011286],
+        "description": "Malibu Beach",
+        "day": 1
+      },
+      {
+        "type": "Point",
+        "coordinates": [-119.698189, 34.420830],
+        "description": "Santa Barbara",
+        "day": 3
+      },
+      {
+        "type": "Point",
+        "coordinates": [-121.898460, 36.603954],
+        "description": "Monterey Bay",
+        "day": 5
+      }
+    ]
+  },
+  {
+    "name": "The Forest Hiker Tour",
+    "startLocation": {
+      "type": "Point",
+      "coordinates": [-122.419415, 37.774929],
+      "address": "San Francisco, CA",
+      "description": "Golden Gate Bridge"
+    },
+    "locations": [
+      {
+        "type": "Point",
+        "coordinates": [-122.406417, 37.785834],
+        "description": "Fisherman's Wharf",
+        "day": 1
+      },
+      {
+        "type": "Point",
+        "coordinates": [-122.083855, 37.421999],
+        "description": "Palo Alto Nature Preserve",
+        "day": 2
+      },
+      {
+        "type": "Point",
+        "coordinates": [-121.567478, 36.940468],
+        "description": "Santa Cruz Mountains",
+        "day": 4
+      }
+    ]
+  },
+  {
+    "name": "The Snow Adventurer Tour",
+    "startLocation": {
+      "type": "Point",
+      "coordinates": [-104.990251, 39.739236],
+      "address": "Denver, CO",
+      "description": "Denver Downtown"
+    },
+    "locations": [
+      {
+        "type": "Point",
+        "coordinates": [-105.358887, 39.647079],
+        "description": "Red Rocks Park",
+        "day": 1
+      },
+      {
+        "type": "Point",
+        "coordinates": [-105.785517, 39.475869],
+        "description": "Breckenridge Ski Resort",
+        "day": 2
+      },
+      {
+        "type": "Point",
+        "coordinates": [-105.644646, 40.415474],
+        "description": "Rocky Mountain National Park",
+        "day": 4
+      }
+    ]
+  },
+  {
+    "name": "The City Wanderer Tour",
+    "startLocation": {
+      "type": "Point",
+      "coordinates": [-73.985428, 40.748817],
+      "address": "New York, NY",
+      "description": "Empire State Building"
+    },
+    "locations": [
+      {
+        "type": "Point",
+        "coordinates": [-73.968285, 40.785091],
+        "description": "Central Park",
+        "day": 1
+      },
+      {
+        "type": "Point",
+        "coordinates": [-74.044502, 40.689247],
+        "description": "Statue of Liberty",
+        "day": 2
+      },
+      {
+        "type": "Point",
+        "coordinates": [-73.963244, 40.779526],
+        "description": "Metropolitan Museum",
+        "day": 3
+      }
+    ]
+  },
+  {
+    "name": "The Park Camper Tour",
+    "startLocation": {
+      "type": "Point",
+      "coordinates": [-119.537643, 37.865101],
+      "address": "Yosemite Valley, CA",
+      "description": "Yosemite National Park Entrance"
+    },
+    "locations": [
+      {
+        "type": "Point",
+        "coordinates": [-119.596835, 37.748708],
+        "description": "Half Dome",
+        "day": 1
+      },
+      {
+        "type": "Point",
+        "coordinates": [-119.600541, 37.717833],
+        "description": "Glacier Point",
+        "day": 2
+      },
+      {
+        "type": "Point",
+        "coordinates": [-119.555671, 37.850649],
+        "description": "El Capitan",
+        "day": 3
+      }
+    ]
+  }
+]

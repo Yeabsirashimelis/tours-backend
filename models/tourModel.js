@@ -75,6 +75,36 @@ const tourSchema = new mongoose.Schema(
     },
     images: [String],
     startDates: [Date],
+    startLocation: {
+      // GeoJSON
+      type: {
+        type: String,
+        default: 'Point',
+        enum: ['Point'],
+      },
+      coordinates: [Number], // [longitude, latitude]
+      address: String,
+      description: String,
+    },
+    locations: [
+      {
+        type: {
+          type: String,
+          default: 'Point',
+          enum: ['Point'],
+        },
+        coordinates: [Number], // [longitude, latitude]
+        address: String,
+        description: String,
+        day: Number,
+      },
+    ],
+    guides: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+      },
+    ],
     secretTour: {
       type: Boolean,
       default: false,
@@ -98,6 +128,10 @@ tourSchema.virtual('reviews', {
   foreignField: 'tour',
   localField: '_id',
 });
+
+// INDEXES
+// Create geospatial index on startLocation
+tourSchema.index({ startLocation: '2dsphere' });
 
 //DOCUMENT MIDDLEWARE: runs before .save() and .create(), not for insertMany()
 tourSchema.pre('save', function (next) {
@@ -132,6 +166,13 @@ tourSchema.pre('save', function (next) {
 //use regular expression to make it run for queries starts with find
 tourSchema.pre(/^find/, function (next) {
   this.find({ secretTour: { $ne: true } }); //don't include secret tours
+  
+  // Populate guides with user information
+  this.populate({
+    path: 'guides',
+    select: '-__v -passwordChangedAt',
+  });
+  
   this.start = Date.now();
   next();
 });

@@ -126,8 +126,9 @@ GET {{baseUrl}}/tours/top-5-cheap
 ### Get Tour by ID
 GET {{baseUrl}}/tours/TOUR_ID_HERE
 
-### Create Tour
+### Create Tour (Admin/Lead-guide only)
 POST {{baseUrl}}/tours
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -140,7 +141,25 @@ Content-Type: application/json
   "description": "Full description here...",
   "imageCover": "tour-cover.jpg",
   "images": ["img1.jpg", "img2.jpg"],
-  "startDates": ["2024-06-01", "2024-07-15", "2024-08-10"]
+  "startDates": ["2024-06-01", "2024-07-15", "2024-08-10"],
+  "guides": ["GUIDE_USER_ID_1", "GUIDE_USER_ID_2"],
+  "startLocation": {
+    "coordinates": [-122.419415, 37.774929],
+    "address": "San Francisco, CA",
+    "description": "Golden Gate Bridge"
+  },
+  "locations": [
+    {
+      "coordinates": [-122.406417, 37.785834],
+      "description": "Fisherman's Wharf",
+      "day": 1
+    },
+    {
+      "coordinates": [-122.083855, 37.421999],
+      "description": "Palo Alto",
+      "day": 3
+    }
+  ]
 }
 
 ### Update Tour (JSON - without images)
@@ -187,6 +206,28 @@ GET {{baseUrl}}/tours/monthly-plan/2024
 GET {{baseUrl}}/tours?duration[gte]=5&difficulty=easy
 GET {{baseUrl}}/tours?price[lt]=500&ratingsAverage[gte]=4.5
 GET {{baseUrl}}/tours?sort=-ratingsAverage,price&fields=name,price,duration
+
+###########################################
+# GEOSPATIAL QUERIES
+###########################################
+
+### Find Tours Within Radius (300 miles from Los Angeles)
+GET {{baseUrl}}/tours/tours-within/300/center/34.0522,-118.2437/unit/mi
+
+### Find Tours Within Radius (200 km from San Francisco)
+GET {{baseUrl}}/tours/tours-within/200/center/37.7749,-122.4194/unit/km
+
+### Calculate Distances from New York (in miles)
+GET {{baseUrl}}/tours/distances/40.7128,-74.0060/unit/mi
+
+### Calculate Distances from Denver (in kilometers)
+GET {{baseUrl}}/tours/distances/39.7392,-104.9903/unit/km
+
+### Find Tours Near Your Location (example: Chicago)
+GET {{baseUrl}}/tours/tours-within/150/center/41.8781,-87.6298/unit/mi
+
+### Get All Tours by a Specific Guide
+GET {{baseUrl}}/tours/guide/GUIDE_USER_ID_HERE
 
 ###########################################
 # REVIEWS
@@ -300,3 +341,17 @@ Authorization: Bearer {{token}}
 # 1. Get Stripe API keys from https://dashboard.stripe.com/test/apikeys
 # 2. Add STRIPE_SECRET_KEY to config.env
 # 3. For webhooks (optional): Add STRIPE_WEBHOOK_SECRET
+
+# Geospatial Queries:
+# - Format: latitude,longitude (e.g., 34.0522,-118.2437)
+# - Units: mi (miles) or km (kilometers)
+# - Tours must have startLocation with GeoJSON coordinates
+# - Sample locations provided in dev-data/data/sample-tour-locations.json
+
+# Major US Cities for Testing:
+# - Los Angeles: 34.0522,-118.2437
+# - San Francisco: 37.7749,-122.4194
+# - New York: 40.7128,-74.0060
+# - Denver: 39.7392,-104.9903
+# - Chicago: 41.8781,-87.6298
+# - Miami: 25.7617,-80.1918
