@@ -5,6 +5,7 @@ import User from '../models/userModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
 import APIFeatures from '../utils/apiFeatures.js';
+import Email from '../utils/email.js';
 
 // Initialize Stripe only if the secret key is provided
 const stripe = process.env.STRIPE_SECRET_KEY 
@@ -124,11 +125,18 @@ export const handleCheckoutSuccess = catchAsync(async (req, res, next) => {
 
   if (session.payment_status === 'paid') {
     // Create booking
-    const tour = session.client_reference_id;
-    const user = req.user.id;
+    const tour = await Tour.findById(session.client_reference_id);
+    const user = await User.findById(req.user.id);
     const price = session.amount_total / 100;
 
-    await Booking.create({ tour, user, price });
+    const booking = await Booking.create({ tour: tour._id, user: user._id, price });
+
+    // Send booking confirmation email
+    await new Email(user, '').sendBookingConfirmation({
+      tour,
+      price,
+      createdAt: booking.createdAt,
+    });
 
     res.status(200).json({
       status: 'success',

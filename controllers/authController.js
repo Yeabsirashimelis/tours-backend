@@ -4,7 +4,8 @@ import catchAsync from '../utils/catchAsync.js';
 import User from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
 import AppError from '../utils/appError.js';
-import sendEmail from '../utils/email.js';
+import Email from '../utils/email.js';
+import { sendEmail } from '../utils/email.js';
 import { promisify } from 'util';
 
 const signToken = (id) => {
@@ -46,6 +47,10 @@ export const signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
   });
+
+  // Send welcome email
+  const url = `${req.protocol}://${req.get('host')}/api/v1/tours`;
+  await new Email(newUser, url).sendWelcome();
 
   createSendToken(newUser, 201, res);
 });
@@ -142,14 +147,9 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
     'host'
   )}/api/v1/users/resetPassword/${resetToken}`;
 
-  const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\n if you didn't  forget your password, please ignore this email.`;
-
   try {
-    await sendEmail({
-      email: user.email,
-      subject: 'your password reset token (valid for 10 min)',
-      message,
-    });
+    // Send password reset email with HTML template
+    await new Email(user, resetURL).sendPasswordReset();
 
     res.status(200).json({
       status: 'success',

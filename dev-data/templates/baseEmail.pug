@@ -1,0 +1,166 @@
+//- Email template adapted for Natours
+doctype html
+html
+  head
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    title= subject
+    style.
+      body {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        font-size: 16px;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+        background-color: #f4f4f4;
+      }
+      table {
+        border-collapse: separate;
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+        width: 100%;
+      }
+      table td {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-size: 16px;
+        vertical-align: top;
+      }
+      .body {
+        background-color: #f4f4f4;
+        width: 100%;
+      }
+      .container {
+        display: block;
+        margin: 0 auto !important;
+        max-width: 600px;
+        padding: 10px;
+        width: 600px;
+      }
+      .content {
+        box-sizing: border-box;
+        display: block;
+        margin: 0 auto;
+        max-width: 600px;
+        padding: 10px;
+      }
+      .main {
+        background: #ffffff;
+        border-radius: 8px;
+        width: 100%;
+      }
+      .wrapper {
+        box-sizing: border-box;
+        padding: 30px;
+      }
+      .header {
+        background-color: #55c57a;
+        padding: 30px;
+        text-align: center;
+        border-radius: 8px 8px 0 0;
+      }
+      .header h1 {
+        color: #ffffff;
+        font-size: 28px;
+        font-weight: bold;
+        margin: 0;
+      }
+      .btn {
+        box-sizing: border-box;
+        width: 100%;
+        margin: 20px 0;
+      }
+      .btn > tbody > tr > td {
+        padding-bottom: 15px;
+      }
+      .btn table {
+        width: auto;
+      }
+      .btn table td {
+        background-color: #ffffff;
+        border-radius: 5px;
+        text-align: center;
+      }
+      .btn a {
+        background-color: #55c57a;
+        border: solid 1px #55c57a;
+        border-radius: 5px;
+        box-sizing: border-box;
+        color: #ffffff;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0;
+        padding: 12px 25px;
+        text-decoration: none;
+        text-transform: capitalize;
+      }
+      .btn-primary a {
+        background-color: #55c57a;
+        border-color: #55c57a;
+        color: #ffffff;
+      }
+      h2 {
+        color: #333333;
+        font-size: 20px;
+        margin-top: 30px;
+        margin-bottom: 15px;
+      }
+      p {
+        color: #333333;
+        font-size: 16px;
+        line-height: 1.6;
+        margin: 15px 0;
+      }
+      .footer {
+        clear: both;
+        margin-top: 20px;
+        text-align: center;
+        width: 100%;
+      }
+      .footer td, .footer p {
+        color: #999999;
+        font-size: 14px;
+        text-align: center;
+      }
+  
+  body
+    table.body(role='presentation', border='0', cellpadding='0', cellspacing='0')
+      tbody
+        tr
+          td
+          td.container
+            .content
+              //- HEADER
+              table.main(role='presentation')
+                tbody
+                  tr
+                    td.header
+                      h1 Natours
+              
+              //- START MAIN CONTENT AREA
+              table.main(role='presentation')
+                tbody
+                  tr
+                    td.wrapper
+                      table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                        tbody
+                          tr
+                            td
+                              block content
+              
+              //- FOOTER
+              .footer
+                table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                  tbody
+                    tr
+                      td.content-block
+                        p Don't want to receive these emails?
+                        p You can manage your email preferences in your account settings.
+                    tr
+                      td.content-block
+                        span © 2024 Natours. All rights reserved.
+          td

@@ -8,7 +8,7 @@
 # AUTHENTICATION
 ###########################################
 
-### Sign Up
+### Sign Up (Sends Welcome Email)
 POST {{baseUrl}}/users/signup
 Content-Type: application/json
 
@@ -19,6 +19,8 @@ Content-Type: application/json
   "passwordConfirm": "password123"
 }
 
+# Note: Welcome email will be sent to the user's email address
+
 ### Login
 POST {{baseUrl}}/users/login
 Content-Type: application/json
@@ -28,13 +30,15 @@ Content-Type: application/json
   "password": "password123"
 }
 
-### Forgot Password
+### Forgot Password (Sends HTML Reset Email)
 POST {{baseUrl}}/users/forgotPassword
 Content-Type: application/json
 
 {
   "email": "john@example.com"
 }
+
+# Note: HTML password reset email will be sent with a styled button
 
 ### Reset Password
 PATCH {{baseUrl}}/users/resetPassword/RESET_TOKEN_HERE

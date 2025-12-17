@@ -1,0 +1,21 @@
+extends baseEmail
+
+block content
+  p Hi #{firstName},
+  p Your booking has been confirmed! 🎊
+  p Thank you for booking with Natours. We're excited for your upcoming adventure!
+  
+  h2 Booking Details:
+  p
+    strong Tour: 
+    | #{booking.tour.name}
+  p
+    strong Price: 
+    | $#{booking.price}
+  p
+    strong Booking Date: 
+    | #{new Date(booking.createdAt).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+  
+  p We'll send you more details about your tour closer to the departure date.
+  p If you have any questions, feel free to contact us anytime!
+  p - The Natours Team
