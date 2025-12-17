@@ -72,6 +72,13 @@ export const updateReview = catchAsync(async (req, res, next) => {
     );
   }
 
+  // Prevent changing tour or user in update
+  if (req.body.tour || req.body.user) {
+    return next(
+      new AppError('You cannot change the tour or user of a review', 400)
+    );
+  }
+
   const updatedReview = await Review.findByIdAndUpdate(
     req.params.id,
     req.body,

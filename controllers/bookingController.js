@@ -193,6 +193,22 @@ export const getMyBookings = catchAsync(async (req, res, next) => {
   });
 });
 
+// Check if user has booked a specific tour
+export const checkIfUserBookedTour = catchAsync(async (req, res, next) => {
+  const booking = await Booking.findOne({
+    user: req.user.id,
+    tour: req.params.tourId,
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      booked: !!booking,
+      booking: booking || null,
+    },
+  });
+});
+
 export const createBooking = catchAsync(async (req, res, next) => {
   const newBooking = await Booking.create(req.body);
 

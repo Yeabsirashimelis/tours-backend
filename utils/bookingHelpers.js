@@ -18,16 +18,27 @@ export const checkExistingBooking = catchAsync(async (req, res, next) => {
   next();
 });
 
-// Middleware to check if user is trying to review a tour they've booked
+// Middleware to check if user has booked a tour before allowing review
 export const checkIfBooked = catchAsync(async (req, res, next) => {
+  // Get the tour ID from body or params (for nested routes)
+  const tourId = req.body.tour || req.params.tourId;
+
+  if (!tourId) {
+    return next(new AppError('Tour ID is required', 400));
+  }
+
+  // Check if user has booked this tour
   const booking = await Booking.findOne({
     user: req.user.id,
-    tour: req.body.tour || req.params.tourId,
+    tour: tourId,
   });
 
   if (!booking) {
     return next(
-      new AppError('You can only review tours you have booked!', 403)
+      new AppError(
+        'You can only review tours you have booked! Please book this tour first.',
+        403
+      )
     );
   }
 

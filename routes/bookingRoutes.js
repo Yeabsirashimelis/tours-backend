@@ -1,5 +1,6 @@
 import express from 'express';
 import {
+  checkIfUserBookedTour,
   createBooking,
   deleteBooking,
   getAllBookings,
@@ -24,6 +25,9 @@ router.get('/checkout-session/:tourId', getCheckoutSession);
 
 // Get current user's bookings
 router.get('/my-bookings', getMyBookings);
+
+// Check if user has booked a specific tour
+router.get('/check-booking/:tourId', checkIfUserBookedTour);
 
 // Admin/lead-guide only routes
 router.use(restrictTo('admin', 'lead-guide'));

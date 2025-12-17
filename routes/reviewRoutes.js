@@ -8,6 +8,7 @@ import {
   updateReview,
 } from '../controllers/reviewController.js';
 import { protect, restrictTo } from '../controllers/authController.js';
+import { checkIfBooked } from '../utils/bookingHelpers.js';
 
 const router = express.Router({ mergeParams: true }); // mergeParams allows access to tourId from parent router
 
@@ -17,7 +18,7 @@ router.use(protect);
 router
   .route('/')
   .get(getAllReviews)
-  .post(restrictTo('user'), setTourUserIds, createReview);
+  .post(restrictTo('user'), setTourUserIds, checkIfBooked, createReview);
 
 router
   .route('/:id')

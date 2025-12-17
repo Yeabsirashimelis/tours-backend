@@ -245,7 +245,11 @@ Authorization: Bearer {{token}}
 GET {{baseUrl}}/tours/TOUR_ID_HERE/reviews
 Authorization: Bearer {{token}}
 
-### Create Review
+### Check if User Booked a Tour (before allowing review)
+GET {{baseUrl}}/bookings/check-booking/TOUR_ID_HERE
+Authorization: Bearer {{token}}
+
+### Create Review (requires active booking)
 POST {{baseUrl}}/reviews
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -256,7 +260,9 @@ Content-Type: application/json
   "tour": "TOUR_ID_HERE"
 }
 
-### Create Review via Nested Route
+# Note: Will fail with 403 if user hasn't booked this tour
+
+### Create Review via Nested Route (requires active booking)
 POST {{baseUrl}}/tours/TOUR_ID_HERE/reviews
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -265,6 +271,8 @@ Content-Type: application/json
   "review": "Great experience overall. Highly recommended!",
   "rating": 4
 }
+
+# Note: Will fail with 403 if user hasn't booked this tour
 
 ### Get Specific Review
 GET {{baseUrl}}/reviews/REVIEW_ID_HERE
@@ -345,6 +353,12 @@ Authorization: Bearer {{token}}
 # 1. Get Stripe API keys from https://dashboard.stripe.com/test/apikeys
 # 2. Add STRIPE_SECRET_KEY to config.env
 # 3. For webhooks (optional): Add STRIPE_WEBHOOK_SECRET
+
+# Review-Booking Integration:
+# - Users can ONLY review tours they have booked
+# - Check booking status: GET /bookings/check-booking/:tourId
+# - Creates authentic, verified reviews
+# - Prevents spam and fake reviews
 
 # Geospatial Queries:
 # - Format: latitude,longitude (e.g., 34.0522,-118.2437)
