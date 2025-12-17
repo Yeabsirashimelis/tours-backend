@@ -13,6 +13,7 @@ import {
   login,
   protect,
   resetPassword,
+  restrictTo,
   signup,
   updatePassword,
 } from '../controllers/authController.js';
@@ -25,10 +26,15 @@ router.post('/login', login);
 router.post('/forgotPassword', forgotPassword);
 router.patch('/resetPassword/:token', resetPassword);
 
-router.patch('/updateMyPassword', protect, updatePassword);
+// Protect all routes after this middleware
+router.use(protect);
 
-router.patch('/updateMe', protect, updateMe);
-router.delete('/deleteMe', protect, deleteMe);
+router.patch('/updateMyPassword', updatePassword);
+router.patch('/updateMe', updateMe);
+router.delete('/deleteMe', deleteMe);
+
+// Restrict all routes after this middleware to admin only
+router.use(restrictTo('admin'));
 
 router.route('/').get(getAllUsers).post(createUser);
 router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);

@@ -61,25 +61,67 @@ export const deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
-export const getUser = (req, res) => {
-  res
-    .status(500)
-    .json({ status: 'error', message: 'this route is not yet defined' });
-};
+export const getUser = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(new AppError('No user found with that ID', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user,
+    },
+  });
+});
 
 export const createUser = (req, res) => {
-  res
-    .status(500)
-    .json({ status: 'error', message: 'this route is not yet defined' });
-};
-export const updateUser = (req, res) => {
-  res
-    .status(500)
-    .json({ status: 'error', message: 'this route is not yet defined' });
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not defined! Please use /signup instead',
+  });
 };
 
-export const deleteUser = (req, res) => {
-  res
-    .status(500)
-    .json({ status: 'error', message: 'this route is not yet defined' });
-};
+// Do NOT update passwords with this!
+export const updateUser = catchAsync(async (req, res, next) => {
+  // 1) Create error if user POSTs password data
+  if (req.body.password || req.body.passwordConfirm) {
+    return next(
+      new AppError(
+        'This route is not for password updates. Please use /updateMyPassword.',
+        400
+      )
+    );
+  }
+
+  // 2) Update user document
+  const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!updatedUser) {
+    return next(new AppError('No user found with that ID', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user: updatedUser,
+    },
+  });
+});
+
+export const deleteUser = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndDelete(req.params.id);
+
+  if (!user) {
+    return next(new AppError('No user found with that ID', 404));
+  }
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
