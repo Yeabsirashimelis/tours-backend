@@ -1,0 +1,265 @@
+### Tours Backend API - Example Requests
+### Use with REST Client extension or Postman
+
+@baseUrl = http://localhost:3000/api/v1
+@token = YOUR_JWT_TOKEN_HERE
+
+###########################################
+# AUTHENTICATION
+###########################################
+
+### Sign Up
+POST {{baseUrl}}/users/signup
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "password123",
+  "passwordConfirm": "password123"
+}
+
+### Login
+POST {{baseUrl}}/users/login
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+
+### Forgot Password
+POST {{baseUrl}}/users/forgotPassword
+Content-Type: application/json
+
+{
+  "email": "john@example.com"
+}
+
+### Reset Password
+PATCH {{baseUrl}}/users/resetPassword/RESET_TOKEN_HERE
+Content-Type: application/json
+
+{
+  "password": "newPassword123",
+  "passwordConfirm": "newPassword123"
+}
+
+### Update My Password (Logged in users)
+PATCH {{baseUrl}}/users/updateMyPassword
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "passwordCurrent": "password123",
+  "password": "newPassword456",
+  "passwordConfirm": "newPassword456"
+}
+
+###########################################
+# USERS
+###########################################
+
+### Get My Profile Data (Update Me)
+PATCH {{baseUrl}}/users/updateMe
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "John Updated",
+  "email": "johnupdated@example.com"
+}
+
+### Delete Me (Soft delete)
+DELETE {{baseUrl}}/users/deleteMe
+Authorization: Bearer {{token}}
+
+### Get All Users (Admin only)
+GET {{baseUrl}}/users
+Authorization: Bearer {{token}}
+
+### Get User by ID (Admin only)
+GET {{baseUrl}}/users/USER_ID_HERE
+Authorization: Bearer {{token}}
+
+### Update User (Admin only)
+PATCH {{baseUrl}}/users/USER_ID_HERE
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Updated Name",
+  "role": "guide"
+}
+
+### Delete User (Admin only)
+DELETE {{baseUrl}}/users/USER_ID_HERE
+Authorization: Bearer {{token}}
+
+###########################################
+# TOURS
+###########################################
+
+### Get All Tours
+GET {{baseUrl}}/tours
+Authorization: Bearer {{token}}
+
+### Get Top 5 Cheap Tours
+GET {{baseUrl}}/tours/top-5-cheap
+
+### Get Tour by ID
+GET {{baseUrl}}/tours/TOUR_ID_HERE
+
+### Create Tour
+POST {{baseUrl}}/tours
+Content-Type: application/json
+
+{
+  "name": "The Amazing Adventure Tour",
+  "duration": 7,
+  "maxGroupSize": 15,
+  "difficulty": "medium",
+  "price": 497,
+  "summary": "An amazing week-long adventure",
+  "description": "Full description here...",
+  "imageCover": "tour-cover.jpg",
+  "images": ["img1.jpg", "img2.jpg"],
+  "startDates": ["2024-06-01", "2024-07-15", "2024-08-10"]
+}
+
+### Update Tour
+PATCH {{baseUrl}}/tours/TOUR_ID_HERE
+Content-Type: application/json
+
+{
+  "price": 599,
+  "maxGroupSize": 20
+}
+
+### Delete Tour (Admin/Lead-guide only)
+DELETE {{baseUrl}}/tours/TOUR_ID_HERE
+Authorization: Bearer {{token}}
+
+### Get Tour Statistics
+GET {{baseUrl}}/tours/tour-stats
+
+### Get Monthly Plan
+GET {{baseUrl}}/tours/monthly-plan/2024
+
+### Advanced Filtering Examples
+GET {{baseUrl}}/tours?duration[gte]=5&difficulty=easy
+GET {{baseUrl}}/tours?price[lt]=500&ratingsAverage[gte]=4.5
+GET {{baseUrl}}/tours?sort=-ratingsAverage,price&fields=name,price,duration
+
+###########################################
+# REVIEWS
+###########################################
+
+### Get All Reviews
+GET {{baseUrl}}/reviews
+Authorization: Bearer {{token}}
+
+### Get Reviews for a Specific Tour
+GET {{baseUrl}}/tours/TOUR_ID_HERE/reviews
+Authorization: Bearer {{token}}
+
+### Create Review
+POST {{baseUrl}}/reviews
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "review": "This tour was absolutely amazing! The guide was knowledgeable and friendly.",
+  "rating": 5,
+  "tour": "TOUR_ID_HERE"
+}
+
+### Create Review via Nested Route
+POST {{baseUrl}}/tours/TOUR_ID_HERE/reviews
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "review": "Great experience overall. Highly recommended!",
+  "rating": 4
+}
+
+### Get Specific Review
+GET {{baseUrl}}/reviews/REVIEW_ID_HERE
+Authorization: Bearer {{token}}
+
+### Update My Review
+PATCH {{baseUrl}}/reviews/REVIEW_ID_HERE
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "review": "Updated review text here",
+  "rating": 5
+}
+
+### Delete My Review
+DELETE {{baseUrl}}/reviews/REVIEW_ID_HERE
+Authorization: Bearer {{token}}
+
+###########################################
+# BOOKINGS
+###########################################
+
+### Get Checkout Session (Start booking process)
+GET {{baseUrl}}/bookings/checkout-session/TOUR_ID_HERE
+Authorization: Bearer {{token}}
+
+### Get My Bookings
+GET {{baseUrl}}/bookings/my-bookings
+Authorization: Bearer {{token}}
+
+### Get All Bookings (Admin/Lead-guide only)
+GET {{baseUrl}}/bookings
+Authorization: Bearer {{token}}
+
+### Get Specific Booking (Admin/Lead-guide only)
+GET {{baseUrl}}/bookings/BOOKING_ID_HERE
+Authorization: Bearer {{token}}
+
+### Create Booking Manually (Admin/Lead-guide only)
+POST {{baseUrl}}/bookings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "tour": "TOUR_ID_HERE",
+  "user": "USER_ID_HERE",
+  "price": 497
+}
+
+### Update Booking (Admin/Lead-guide only)
+PATCH {{baseUrl}}/bookings/BOOKING_ID_HERE
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "paid": true
+}
+
+### Delete Booking (Admin/Lead-guide only)
+DELETE {{baseUrl}}/bookings/BOOKING_ID_HERE
+Authorization: Bearer {{token}}
+
+###########################################
+# NOTES
+###########################################
+
+# Booking Flow:
+# 1. User calls GET /bookings/checkout-session/:tourId
+# 2. Backend creates Stripe checkout session and returns URL
+# 3. Frontend redirects user to Stripe checkout page
+# 4. User enters payment details on Stripe
+# 5. After successful payment, Stripe redirects to success URL
+# 6. Backend creates booking record
+# 7. User can view booking in /bookings/my-bookings
+
+# Setup Required:
+# 1. Get Stripe API keys from https://dashboard.stripe.com/test/apikeys
+# 2. Add STRIPE_SECRET_KEY to config.env
+# 3. For webhooks (optional): Add STRIPE_WEBHOOK_SECRET
