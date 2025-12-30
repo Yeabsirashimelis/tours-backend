@@ -52,11 +52,13 @@ npm run dev
 The API will be running at `http://localhost:3000`
 
 **Test it:** Open `http://localhost:3000/health` in your browser or:
+
 ```bash
 curl http://localhost:3000/health
 ```
 
 **First API call:**
+
 ```bash
 # Get all tours
 curl http://localhost:3000/api/v1/tours
@@ -67,12 +69,14 @@ curl http://localhost:3000/api/v1/tours
 ## ✨ Features
 
 - **🔐 Authentication & Authorization**
+
   - JWT-based authentication
   - Role-based access control (admin, lead-guide, guide, user)
   - Password reset functionality with email tokens
   - Secure password storage with bcrypt
 
 - **🗺️ Tour Management**
+
   - CRUD operations for tours
   - Advanced filtering, sorting, and pagination
   - Geospatial queries (find tours within radius)
@@ -80,22 +84,26 @@ curl http://localhost:3000/api/v1/tours
   - Image upload and processing
 
 - **👥 User Management**
+
   - User registration and profile management
   - Password management
   - User roles and permissions
   - Image upload for user photos
 
 - **⭐ Review System**
+
   - Users can review tours they've booked
   - Average rating calculation
   - Prevent duplicate reviews
 
 - **💳 Booking System**
+
   - Stripe payment integration
   - Booking management
   - Email confirmations
 
 - **🔒 Security Features**
+
   - Rate limiting
   - HTTP parameter pollution protection
   - Data sanitization (NoSQL injection, XSS)
@@ -120,33 +128,39 @@ curl http://localhost:3000/api/v1/tours
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yeabsira/natours-api.git
    cd natours-api
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Configure environment variables**
+
    - Copy `.env.example` to `config.env`
    - Update the values with your configuration
+
    ```bash
    cp .env.example config.env
    ```
 
 4. **Import sample data (optional)**
+
    ```bash
    node dev-data/data/import-dev-data.js --import
    ```
 
 5. **Start the server**
+
    ```bash
    # Development mode
    npm run dev
-   
+
    # Production mode
    npm start
    ```
@@ -156,6 +170,7 @@ The API will be available at `http://localhost:3000` (or your configured PORT)
 ## 📚 API Documentation
 
 ### Base URL
+
 ```
 http://localhost:3000/api/v1
 ```
@@ -163,6 +178,7 @@ http://localhost:3000/api/v1
 ### Authentication
 
 #### Sign Up
+
 ```http
 POST /users/signup
 Content-Type: application/json
@@ -176,6 +192,7 @@ Content-Type: application/json
 ```
 
 #### Login
+
 ```http
 POST /users/login
 Content-Type: application/json
@@ -187,6 +204,7 @@ Content-Type: application/json
 ```
 
 #### Forgot Password
+
 ```http
 POST /users/forgotPassword
 Content-Type: application/json
@@ -197,6 +215,7 @@ Content-Type: application/json
 ```
 
 #### Reset Password
+
 ```http
 PATCH /users/resetPassword/:token
 Content-Type: application/json
@@ -208,6 +227,7 @@ Content-Type: application/json
 ```
 
 #### Update Password (Authenticated)
+
 ```http
 PATCH /users/updateMyPassword
 Authorization: Bearer <token>
@@ -223,6 +243,7 @@ Content-Type: application/json
 ### Tours
 
 #### Get All Tours
+
 ```http
 GET /tours
 
@@ -231,11 +252,13 @@ GET /tours?duration[gte]=5&difficulty=easy&sort=-ratingsAverage&limit=10&page=1
 ```
 
 #### Get Tour by ID
+
 ```http
 GET /tours/:id
 ```
 
 #### Create Tour (Admin/Lead-Guide only)
+
 ```http
 POST /tours
 Authorization: Bearer <token>
@@ -256,6 +279,7 @@ Content-Type: application/json
 ```
 
 #### Update Tour (Admin/Lead-Guide only)
+
 ```http
 PATCH /tours/:id
 Authorization: Bearer <token>
@@ -267,12 +291,14 @@ Content-Type: application/json
 ```
 
 #### Delete Tour (Admin/Lead-Guide only)
+
 ```http
 DELETE /tours/:id
 Authorization: Bearer <token>
 ```
 
 #### Get Tours Within Radius
+
 ```http
 GET /tours/tours-within/:distance/center/:latlng/unit/:unit
 
@@ -281,11 +307,13 @@ GET /tours/tours-within/200/center/34.0522,-118.2437/unit/mi
 ```
 
 #### Get Tour Statistics
+
 ```http
 GET /tours/tour-stats
 ```
 
 #### Get Monthly Plan (Admin/Lead-Guide/Guide)
+
 ```http
 GET /tours/monthly-plan/:year
 ```
@@ -293,24 +321,28 @@ GET /tours/monthly-plan/:year
 ### Users
 
 #### Get All Users (Admin only)
+
 ```http
 GET /users
 Authorization: Bearer <token>
 ```
 
 #### Get User by ID (Admin only)
+
 ```http
 GET /users/:id
 Authorization: Bearer <token>
 ```
 
 #### Get Current User
+
 ```http
 GET /users/me
 Authorization: Bearer <token>
 ```
 
 #### Update Current User
+
 ```http
 PATCH /users/updateMe
 Authorization: Bearer <token>
@@ -321,6 +353,7 @@ photo=@/path/to/photo.jpg
 ```
 
 #### Delete Current User (soft delete)
+
 ```http
 DELETE /users/deleteMe
 Authorization: Bearer <token>
@@ -329,16 +362,19 @@ Authorization: Bearer <token>
 ### Reviews
 
 #### Get All Reviews
+
 ```http
 GET /reviews
 ```
 
 #### Get Review by ID
+
 ```http
 GET /reviews/:id
 ```
 
 #### Create Review (User only, must have booked the tour)
+
 ```http
 POST /reviews
 Authorization: Bearer <token>
@@ -353,6 +389,7 @@ Content-Type: application/json
 ```
 
 #### Update Review (Own review only)
+
 ```http
 PATCH /reviews/:id
 Authorization: Bearer <token>
@@ -364,17 +401,20 @@ Content-Type: application/json
 ```
 
 #### Delete Review (Admin/Own review)
+
 ```http
 DELETE /reviews/:id
 Authorization: Bearer <token>
 ```
 
 #### Get Reviews for a Tour
+
 ```http
 GET /tours/:tourId/reviews
 ```
 
 #### Create Review for a Tour
+
 ```http
 POST /tours/:tourId/reviews
 Authorization: Bearer <token>
@@ -389,24 +429,28 @@ Content-Type: application/json
 ### Bookings
 
 #### Get All Bookings (Admin/Lead-Guide)
+
 ```http
 GET /bookings
 Authorization: Bearer <token>
 ```
 
 #### Get Booking by ID
+
 ```http
 GET /bookings/:id
 Authorization: Bearer <token>
 ```
 
 #### Create Checkout Session
+
 ```http
 GET /bookings/checkout-session/:tourId
 Authorization: Bearer <token>
 ```
 
 #### Create Booking (Admin/Lead-Guide)
+
 ```http
 POST /bookings
 Authorization: Bearer <token>
@@ -420,6 +464,7 @@ Content-Type: application/json
 ```
 
 #### Update Booking (Admin/Lead-Guide)
+
 ```http
 PATCH /bookings/:id
 Authorization: Bearer <token>
@@ -431,6 +476,7 @@ Content-Type: application/json
 ```
 
 #### Delete Booking (Admin/Lead-Guide)
+
 ```http
 DELETE /bookings/:id
 Authorization: Bearer <token>
@@ -439,6 +485,7 @@ Authorization: Bearer <token>
 ## 🛠️ API Features
 
 ### Filtering
+
 ```http
 # Get tours with duration >= 5 and difficulty = easy
 GET /tours?duration[gte]=5&difficulty=easy
@@ -447,6 +494,7 @@ GET /tours?duration[gte]=5&difficulty=easy
 ```
 
 ### Sorting
+
 ```http
 # Sort by price ascending
 GET /tours?sort=price
@@ -459,18 +507,21 @@ GET /tours?sort=-ratingsAverage,price
 ```
 
 ### Field Limiting
+
 ```http
 # Only return specific fields
 GET /tours?fields=name,duration,difficulty,price
 ```
 
 ### Pagination
+
 ```http
 # Get page 2 with 10 results per page
 GET /tours?page=2&limit=10
 ```
 
 ### Combining Features
+
 ```http
 GET /tours?duration[gte]=5&difficulty=easy&sort=-ratingsAverage&fields=name,price&page=1&limit=5
 ```
@@ -571,67 +622,87 @@ npm run delete:data      # Delete all data from database
 ### Common Issues
 
 #### **Problem: Cannot connect to MongoDB**
+
 ```
 Error: MongoServerError: Authentication failed
 ```
+
 **Solution:**
+
 - Verify your MongoDB connection string in `config.env`
 - Ensure your IP address is whitelisted in MongoDB Atlas
 - Check that your database username and password are correct
 
 #### **Problem: JWT errors**
+
 ```
 JsonWebTokenError: invalid signature
 ```
+
 **Solution:**
+
 - Ensure `JWT_SECRET` is set in `config.env`
 - Check that the token hasn't expired
 - Verify the token format is correct
 
 #### **Problem: Stripe payment fails**
+
 ```
 Error: No such API key
 ```
+
 **Solution:**
+
 - Replace placeholder Stripe keys with real keys from your Stripe dashboard
 - Use test keys for development: `sk_test_...`
 - Use live keys for production: `sk_live_...`
 
 #### **Problem: Email not sending**
+
 ```
 Error: Invalid login
 ```
+
 **Solution:**
+
 - Verify email credentials in `config.env`
 - For development, use Mailtrap credentials
 - For production, configure SendGrid or similar service
 
 #### **Problem: Tests failing**
+
 ```
 Cannot find module 'jest'
 ```
+
 **Solution:**
+
 ```bash
 npm install  # Install all dependencies including devDependencies
 ```
 
 #### **Problem: Port already in use**
+
 ```
 Error: listen EADDRINUSE: address already in use :::3000
 ```
+
 **Solution:**
+
 - Change the PORT in `config.env`
 - Or kill the process using port 3000:
+
   ```bash
   # On Windows
   netstat -ano | findstr :3000
   taskkill /PID <PID> /F
-  
+
   # On Mac/Linux
   lsof -ti:3000 | xargs kill -9
   ```
 
 ### Need More Help?
+
 - Check the [API Documentation](./API_DOCUMENTATION.md) for detailed endpoint information
 - Review the [Contributing Guide](./CONTRIBUTING.md) for development guidelines
 - Open an issue on GitHub with details about your problem
@@ -650,14 +721,10 @@ This project is licensed under the ISC License.
 
 ## 👥 Authors
 
-- **Yeabsira Shimelis** - *Full Stack Developer* - Initial work and development
+- **Yeabsira Shimelis** - _Full Stack Developer_ - Initial work and development
 
 ## 🙏 Acknowledgments
 
 - Express.js team
 - MongoDB team
 - All contributors
-
-## 📞 Support
-
-For support, email support@natours.com or open an issue in the repository.
