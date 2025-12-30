@@ -1,6 +1,68 @@
 # 🌍 Natours API
 
+![Node.js](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?logo=mongodb&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?logo=express&logoColor=white)
+![License](https://img.shields.io/badge/license-ISC-blue)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+
 A comprehensive tour booking RESTful API built with Node.js, Express, and MongoDB. This application provides a complete backend solution for managing tours, users, bookings, and reviews with advanced features like authentication, payment processing, and email notifications.
+
+## 📑 Table of Contents
+
+- [Quick Start](#-quick-start)
+- [Features](#-features)
+- [Getting Started](#-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [API Documentation](#-api-documentation)
+- [API Features](#️-api-features)
+- [Environment Variables](#-environment-variables)
+- [Project Structure](#-project-structure)
+- [Testing](#-testing)
+- [Available Scripts](#-available-scripts)
+- [Security Best Practices](#-security-best-practices)
+- [Troubleshooting](#-troubleshooting)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Authors](#-authors)
+- [Support](#-support)
+
+## 🚀 Quick Start
+
+Get the API running in 3 minutes:
+
+```bash
+# 1. Clone and install
+git clone https://github.com/yeabsira/natours-api.git
+cd natours-api
+npm install
+
+# 2. Set up environment
+cp .env.example config.env
+# Edit config.env with your MongoDB URI and other credentials
+
+# 3. Import sample data (optional)
+npm run import:data
+
+# 4. Start the server
+npm run dev
+```
+
+The API will be running at `http://localhost:3000`
+
+**Test it:** Open `http://localhost:3000/health` in your browser or:
+```bash
+curl http://localhost:3000/health
+```
+
+**First API call:**
+```bash
+# Get all tours
+curl http://localhost:3000/api/v1/tours
+```
+
+> 💡 **Tip:** For detailed setup and configuration, see the [Getting Started](#-getting-started) section below.
 
 ## ✨ Features
 
@@ -59,7 +121,7 @@ A comprehensive tour booking RESTful API built with Node.js, Express, and MongoD
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/yeabsira/natours-api.git
    cd natours-api
    ```
 
@@ -462,11 +524,17 @@ natours-api/
 ## 🧪 Testing
 
 ```bash
+# Install test dependencies first
+npm install
+
 # Run tests
 npm test
 
-# Run tests in watch mode
-npm run test:watch
+# Run unit tests only
+npm run test:unit
+
+# Run integration tests only
+npm run test:integration
 
 # Generate coverage report
 npm run test:coverage
@@ -475,11 +543,16 @@ npm run test:coverage
 ## 📦 Available Scripts
 
 ```bash
-npm start           # Start production server
-npm run dev         # Start development server with nodemon
-npm run debug       # Start server in debug mode
-npm test            # Run tests
-npm run test:watch  # Run tests in watch mode
+npm start                # Start production server
+npm run dev              # Start development server with nodemon
+npm run start:prod       # Start production server with NODE_ENV=production
+npm run debug            # Start server in debug mode
+npm test                 # Run all tests
+npm run test:unit        # Run unit tests only
+npm run test:integration # Run integration tests only
+npm run test:coverage    # Generate test coverage report
+npm run import:data      # Import sample data to database
+npm run delete:data      # Delete all data from database
 ```
 
 ## 🔒 Security Best Practices
@@ -492,6 +565,76 @@ npm run test:watch  # Run tests in watch mode
 - Validate and sanitize all inputs
 - Use environment variables for sensitive data
 - Never commit `config.env` file
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+#### **Problem: Cannot connect to MongoDB**
+```
+Error: MongoServerError: Authentication failed
+```
+**Solution:**
+- Verify your MongoDB connection string in `config.env`
+- Ensure your IP address is whitelisted in MongoDB Atlas
+- Check that your database username and password are correct
+
+#### **Problem: JWT errors**
+```
+JsonWebTokenError: invalid signature
+```
+**Solution:**
+- Ensure `JWT_SECRET` is set in `config.env`
+- Check that the token hasn't expired
+- Verify the token format is correct
+
+#### **Problem: Stripe payment fails**
+```
+Error: No such API key
+```
+**Solution:**
+- Replace placeholder Stripe keys with real keys from your Stripe dashboard
+- Use test keys for development: `sk_test_...`
+- Use live keys for production: `sk_live_...`
+
+#### **Problem: Email not sending**
+```
+Error: Invalid login
+```
+**Solution:**
+- Verify email credentials in `config.env`
+- For development, use Mailtrap credentials
+- For production, configure SendGrid or similar service
+
+#### **Problem: Tests failing**
+```
+Cannot find module 'jest'
+```
+**Solution:**
+```bash
+npm install  # Install all dependencies including devDependencies
+```
+
+#### **Problem: Port already in use**
+```
+Error: listen EADDRINUSE: address already in use :::3000
+```
+**Solution:**
+- Change the PORT in `config.env`
+- Or kill the process using port 3000:
+  ```bash
+  # On Windows
+  netstat -ano | findstr :3000
+  taskkill /PID <PID> /F
+  
+  # On Mac/Linux
+  lsof -ti:3000 | xargs kill -9
+  ```
+
+### Need More Help?
+- Check the [API Documentation](./API_DOCUMENTATION.md) for detailed endpoint information
+- Review the [Contributing Guide](./CONTRIBUTING.md) for development guidelines
+- Open an issue on GitHub with details about your problem
 
 ## 🤝 Contributing
 
@@ -507,7 +650,7 @@ This project is licensed under the ISC License.
 
 ## 👥 Authors
 
-- Your Name - Initial work
+- **Yeabsira Shimelis** - *Full Stack Developer* - Initial work and development
 
 ## 🙏 Acknowledgments
 
