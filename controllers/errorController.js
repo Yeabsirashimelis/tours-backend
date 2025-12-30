@@ -57,8 +57,6 @@ const sendErrorProd = (err, res) => {
 };
 
 export const globalErrorHandler = (err, req, res, next) => {
-  // console.log(err.stack);
-
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 
@@ -72,8 +70,8 @@ export const globalErrorHandler = (err, req, res, next) => {
     if (error.name === 'ValidationError')
       error = handleValidationErrorDB(error);
 
-    if (error.name === 'JsonWebTokenError') handleJWTError();
-    if (error.name === 'TokenExpiredError') handleJWTExpiredError();
+    if (error.name === 'JsonWebTokenError') error = handleJWTError();
+    if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
     sendErrorProd(error, res);
   }
 };

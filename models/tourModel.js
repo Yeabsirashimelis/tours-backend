@@ -14,9 +14,6 @@ const tourSchema = new mongoose.Schema(
       trim: true,
       maxlength: [40, 'A tour name must have less or equal 40 character'],
       minlength: [10, 'A tour name must have more or equal 10 characters'],
-
-      //using external library using mongoose
-      // validate: [validator.i  sAlpha, 'Tour name must only contain characters'], //check if the name contains letters only
     },
     slug: String,
     duration: {
@@ -139,30 +136,7 @@ tourSchema.pre('save', function (next) {
   next();
 });
 
-// tourSchema.pre('save', function (next) {
-//   console.log('will save document...');
-//   next();
-// });
-
-// // runs after .save() and .create(), not for insertMany()
-// // we have access to the created document now.
-// tourSchema.post('save', function (doc, next) {
-//   console.log(doc);
-//   next();
-// });
-
-//QUERY MIDDLEWARE- only run for find
-// tourSchema.pre('find', function (next) {
-//   this.find({ secretTour: { $ne: true } }); //don't include secret tours
-//   next();
-// });
-
-//run for findById and findOne
-// tourSchema.pre('findOne', function (next) {
-//   this.find({ secretTour: { $ne: true } }); //don't include secret tours
-//   next();
-// });
-
+//QUERY MIDDLEWARE
 //use regular expression to make it run for queries starts with find
 tourSchema.pre(/^find/, function (next) {
   this.find({ secretTour: { $ne: true } }); //don't include secret tours
@@ -178,8 +152,6 @@ tourSchema.pre(/^find/, function (next) {
 });
 
 tourSchema.post(/^find/, function (docs, next) {
-  console.log(`Query took ${Date.now() - this.start} milliseconds`);
-  // console.log(docs);
   next();
 });
 
@@ -187,7 +159,6 @@ tourSchema.post(/^find/, function (docs, next) {
 //we want the secret tours to be removed from the aggregation related routes
 tourSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } }); //add to the pipeline filter in the aggregation pipeline
-  console.log(this.pipeline());
   next();
 });
 

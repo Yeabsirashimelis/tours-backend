@@ -131,7 +131,6 @@ export const restrictTo = (...roles) => {
 };
 
 export const forgotPassword = catchAsync(async (req, res, next) => {
-  console.log('--- inside forgotPassword ---', req.body.email);
   // 1, get user based on the posted email
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
@@ -153,7 +152,7 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
       status: 'success',
-      mesage: 'token sent to email!',
+      message: 'token sent to email!',
     });
   } catch (error) {
     user.passwordResetToken = undefined;

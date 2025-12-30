@@ -10,7 +10,6 @@ process.on('uncaughtException', (err) => {
 });
 
 dotenv.config({ path: './config.env' });
-// console.log (process.env);
 
 import app from './app.js';
 
